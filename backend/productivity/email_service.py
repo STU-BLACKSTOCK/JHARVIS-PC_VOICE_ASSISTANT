@@ -1,0 +1,60 @@
+import os.path
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+import base64
+
+# If modifying these scopes, delete the file token.json.
+SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send']
+
+def get_gmail_service():
+    creds = None
+    # The file token.json stores the user's access and refresh tokens
+    if os.path.exists('token.json'):
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            if not os.path.exists('credentials.json'):
+                print("Missing credentials.json for Gmail API. Please download it from Google Cloud Console.")
+                return None
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+
+    try:
+        service = build('gmail', 'v1', credentials=creds)
+        return service
+    except Exception as error:
+        print(f"An error occurred connecting to Gmail: {error}")
+        return None
+
+def read_latest_emails(max_results=3):
+    service = get_gmail_service()
+    if not service:
+        return "Gmail API is not configured. Missing credentials."
+    
+    try:
+        results = service.users().messages().list(userId='me', labelIds=['INBOX', 'UNREAD'], maxResults=max_results).execute()
+        messages = results.get('messages', [])
+
+        if not messages:
+            return "You have no unread messages."
+        
+        summaries = []
+        for message in messages:
+            msg = service.users().messages().get(userId='me', id=message['id']).execute()
+            headers = msg['payload']['headers']
+            subject = next((h['value'] for h in headers if h['name'] == 'Subject'), "No Subject")
+            sender = next((h['value'] for h in headers if h['name'] == 'From'), "Unknown Sender")
+            summaries.append(f"From {sender.split('<')[0].strip()}: {subject}")
+            
+        return "Here are your latest emails. " + ". ".join(summaries)
+    except Exception as e:
+        return f"Error reading emails: {e}"

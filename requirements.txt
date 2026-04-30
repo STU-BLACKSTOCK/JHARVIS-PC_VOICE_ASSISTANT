@@ -1,0 +1,14 @@
+speechrecognition
+pyttsx3
+pygame
+gtts
+groq
+fastapi
+uvicorn
+supabase
+python-dotenv
+requests
+psutil
+pyautogui
+websockets
+pyperclip
