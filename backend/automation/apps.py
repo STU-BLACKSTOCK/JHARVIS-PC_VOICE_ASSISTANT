@@ -1,4 +1,6 @@
 import os
+import time
+import pyautogui
 
 def launch_app(app_name: str) -> str:
     app_paths = {
@@ -14,4 +16,13 @@ def launch_app(app_name: str) -> str:
         except Exception as e:
             return f"Failed to launch {app_name}: {e}"
     else:
-        return "App path not found. Please update the app list."
+        # Fallback to Windows Start Menu search
+        try:
+            pyautogui.press('win')
+            time.sleep(0.5)
+            pyautogui.write(app_name, interval=0.05)
+            time.sleep(0.5)
+            pyautogui.press('enter')
+            return f"Attempted to open {app_name} via Windows Search."
+        except Exception as e:
+            return f"Failed to open {app_name}: {e}"

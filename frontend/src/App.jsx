@@ -1,70 +1,95 @@
-import { useState, useEffect, useRef } from 'react'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import Sidebar from './components/Sidebar';
+import HomeView from './components/HomeView';
+import SystemMonitor from './components/SystemMonitor';
+import ActivityFeed from './components/ActivityFeed';
 
 function App() {
-  const [messages, setMessages] = useState([]);
-  const [status, setStatus] = useState("Offline");
-  const ws = useRef(null);
+  const [ws, setWs] = useState(null);
+  const [isListening, setIsListening] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [systemStats, setSystemStats] = useState({ cpu_percent: 0, ram_percent: 0, battery: 'N/A' });
+  
+  const [currentTab, setCurrentTab] = useState('home');
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isFeedOpen, setIsFeedOpen] = useState(false);
 
   useEffect(() => {
-    // Connect to WebSocket backend
-    ws.current = new WebSocket("ws://localhost:8000/ws");
+    const websocket = new WebSocket("ws://localhost:8000/ws");
     
-    ws.current.onopen = () => setStatus("Listening...");
-    ws.current.onclose = () => setStatus("Offline");
-    ws.current.onerror = () => setStatus("Error connecting to Jarvis");
+    websocket.onopen = () => console.log("Connected to Jarvis Backend");
     
-    ws.current.onmessage = (event) => {
+    websocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === 'response') {
-        setMessages(prev => [...prev, { role: 'jarvis', content: data.message }]);
-        setStatus("Listening...");
-      } else if (data.type === 'status') {
-        setStatus(data.message);
+      
+      if (data.type === "status") {
+        if (data.message === "Listening...") {
+          setIsListening(true);
+          setIsProcessing(false);
+        } else if (data.message === "Processing...") {
+          setIsListening(false);
+          setIsProcessing(true);
+        } else {
+          setIsListening(false);
+          setIsProcessing(false);
+        }
+      } 
+      else if (data.type === "response") {
+        setChatHistory(prev => [...prev, { role: data.role, message: data.message }]);
+        setIsProcessing(false);
+        setIsListening(false);
+      }
+      else if (data.type === "automation_step") {
+        setActivities(prev => [{ message: data.message, timestamp: Date.now() }, ...prev].slice(0, 10));
+        setIsFeedOpen(true); // Auto-open feed when automation happens
+      }
+      else if (data.type === "system_stats") {
+        setSystemStats(data);
       }
     };
 
-    return () => {
-      ws.current.close();
-    };
+    websocket.onclose = () => console.log("Disconnected from Backend");
+    
+    setWs(websocket);
+    
+    return () => websocket.close();
   }, []);
 
   return (
-    <div className="jarvis-container">
-      <div className="glass-panel main-panel">
-        <header className="header">
-          <div className="avatar-container">
-            <div className={`avatar-ring ${status.includes('Processing') ? 'pulse' : ''}`}></div>
-            <img src="https://ui-avatars.com/api/?name=J&background=0D8ABC&color=fff&rounded=true" alt="Jarvis" className="avatar" />
-          </div>
-          <h1>J.A.R.V.I.S.</h1>
-          <div className={`status-badge ${status === 'Offline' ? 'offline' : 'online'}`}>
-            <span className="dot"></span> {status}
-          </div>
-        </header>
-
-        <div className="chat-container">
-          {messages.length === 0 ? (
-            <div className="empty-state">System Online. Awaiting voice command...</div>
-          ) : (
-            messages.map((msg, idx) => (
-              <div key={idx} className={`message ${msg.role}`}>
-                <div className="message-content">{msg.content}</div>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="voice-waveform">
-          <div className="bar"></div>
-          <div className="bar"></div>
-          <div className="bar"></div>
-          <div className="bar"></div>
-          <div className="bar"></div>
-        </div>
+    <div className="app-container theme-dark">
+      {/* Icon Dock on the left side */}
+      <div className="dock glass-panel">
+        <button className={`dock-btn ${isNavOpen ? 'active' : ''}`} onClick={() => { setIsNavOpen(!isNavOpen); setIsFeedOpen(false); }} title="Navigation">
+          ☰
+        </button>
+        <button className={`dock-btn ${isFeedOpen ? 'active' : ''}`} onClick={() => { setIsFeedOpen(!isFeedOpen); setIsNavOpen(false); }} title="Activity Feed">
+          ⚡
+        </button>
       </div>
+
+      {/* Collapsible Panels on the left */}
+      <div className={`side-panel-container ${isNavOpen || isFeedOpen ? 'open' : ''}`}>
+        {isNavOpen && <Sidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />}
+        {isFeedOpen && <ActivityFeed activities={activities} />}
+      </div>
+      
+      <main className="main-content">
+        {currentTab === 'home' && (
+          <HomeView isListening={isListening} isProcessing={isProcessing} chatHistory={chatHistory} />
+        )}
+        {currentTab === 'system' && <SystemMonitor ws={ws} stats={systemStats} />}
+        {currentTab === 'productivity' && (
+          <div className="placeholder-view glass-panel"><h2>Productivity & Notes (Coming Soon)</h2></div>
+        )}
+        {currentTab === 'workflows' && (
+          <div className="placeholder-view glass-panel"><h2>Saved Workflows (Coming Soon)</h2></div>
+        )}
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

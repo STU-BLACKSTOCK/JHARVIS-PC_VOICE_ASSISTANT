@@ -22,7 +22,7 @@ def aiProcess(command: str) -> str:
                 {"role": "system", "content": "You are a virtual assistant named Jarvis. Give short, helpful, and concise responses."},
                 {"role": "user", "content": command}
             ],
-            model="llama3-70b-8192", # Using a fast groq model
+            model="llama-3.3-70b-versatile", # Using a fast groq model
             temperature=0.7,
             max_tokens=1024,
         )

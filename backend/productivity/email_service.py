@@ -1,4 +1,4 @@
-import os.path
+import os
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -8,29 +8,40 @@ import base64
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send']
 
+# Secure absolute path resolution
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+TOKEN_PATH = os.path.join(ROOT_DIR, 'token.json')
+CREDS_PATH = os.path.join(ROOT_DIR, 'credentials.json')
+
+_cached_service = None
+
 def get_gmail_service():
+    global _cached_service
+    if _cached_service:
+        return _cached_service
+
     creds = None
     # The file token.json stores the user's access and refresh tokens
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists(TOKEN_PATH):
+        creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
     
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            if not os.path.exists('credentials.json'):
+            if not os.path.exists(CREDS_PATH):
                 print("Missing credentials.json for Gmail API. Please download it from Google Cloud Console.")
                 return None
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(CREDS_PATH, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open(TOKEN_PATH, 'w') as token:
             token.write(creds.to_json())
 
     try:
-        service = build('gmail', 'v1', credentials=creds)
-        return service
+        _cached_service = build('gmail', 'v1', credentials=creds)
+        return _cached_service
     except Exception as error:
         print(f"An error occurred connecting to Gmail: {error}")
         return None

@@ -1,5 +1,5 @@
 speechrecognition
-pyttsx3
+edge-tts
 pygame
 gtts
 groq
@@ -12,3 +12,9 @@ psutil
 pyautogui
 websockets
 pyperclip
+pynput
+pygetwindow
+playwright
+GPUtil
+mss
+opencv-python
