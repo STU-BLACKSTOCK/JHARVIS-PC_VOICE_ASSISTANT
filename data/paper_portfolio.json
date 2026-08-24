@@ -1,0 +1,35 @@
+{
+  "cash_balance": 96881.75,
+  "realized_pnl": 0.0,
+  "positions": {
+    "AAPL": {
+      "shares": 10,
+      "avg_price": 311.82,
+      "total_cost": 3118.25
+    }
+  },
+  "orders": [
+    {
+      "id": "31126302",
+      "symbol": "AAPL",
+      "side": "BUY",
+      "shares": 5,
+      "price": 311.9,
+      "total": 1559.5,
+      "order_type": "MARKET",
+      "status": "FILLED",
+      "timestamp": "2026-08-24T21:09:23.064699"
+    },
+    {
+      "id": "598cb4a3",
+      "symbol": "AAPL",
+      "side": "BUY",
+      "shares": 5,
+      "price": 311.75,
+      "total": 1558.75,
+      "order_type": "MARKET",
+      "status": "FILLED",
+      "timestamp": "2026-08-24T20:43:10.107031"
+    }
+  ]
+}

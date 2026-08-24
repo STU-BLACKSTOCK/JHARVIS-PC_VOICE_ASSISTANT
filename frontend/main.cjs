@@ -5,19 +5,18 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 700,
+    width: 1200,
+    height: 800,
+    minWidth: 960,
+    minHeight: 650,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
     },
-    titleBarStyle: 'hidden',
     autoHideMenuBar: true,
-    backgroundColor: '#0a0e17'
+    backgroundColor: '#08090C'
   });
 
-  // Wait for Vite to be ready and load the dev server URL
-  // In production, you would loadFile index.html
   mainWindow.loadURL('http://localhost:5173');
 
   mainWindow.on('closed', function () {

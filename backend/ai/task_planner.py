@@ -1,5 +1,5 @@
 import json
-from backend.ai.groq_client import client, GROQ_API_KEY
+from backend.ai.groq_client import client, GROQ_API_KEY, get_active_model
 
 def plan_task(natural_language_command: str) -> list:
     """Uses Groq to break down a command into an array of executable automation steps."""
@@ -33,7 +33,7 @@ def plan_task(natural_language_command: str) -> list:
     try:
         completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
-            model="llama-3.3-70b-versatile",
+            model=get_active_model(),
             temperature=0.1,
             response_format={"type": "json_object"}
         )

@@ -1,43 +1,50 @@
-# Jarvis AI Features
+# J.A.R.V.I.S. Pro — Feature Specifications
 
-This document outlines the complete list of features integrated into the Jarvis AI Desktop Assistant.
+This document outlines the complete capabilities of the J.A.R.V.I.S. Desktop AI & Quantitative Platform.
 
-## Core Assistant Features
+---
 
-* **Continuous Voice Listening:** Uses `speech_recognition` to detect commands seamlessly.
-* **Wake Word Detection:** Responds to the "Jarvis" wake word before initiating a full command query.
-* **Groq API Integration:** Lightning-fast AI responses powered by `llama3-70b-8192` (or configurable models) via Groq.
-* **Text-To-Speech (TTS):** Uses Google TTS (`gTTS`) combined with `pygame` for smooth playback, with a robust offline fallback via `pyttsx3`.
+## 1. Autonomous AI Assistant & Tool Execution
+* **Groq LLaMA 3.3 70B Integration:** Ultra-fast sub-200ms conversational inference.
+* **Native Tool Calling Engine:** Dynamic function calling dispatch for productivity, market data, paper orders, alarms, and OS automation.
+* **Sliding Window Multi-Turn Memory:** Retains multi-turn conversation context across queries.
+* **Dual Input Gateways:** Voice microphone input and instant text command input.
 
-## Autonomous Desktop Agent Features (Phase 3)
+## 2. Voice & Audio Pipeline
+* **Wake-Word Gating:** Recognizes the "Jarvis" wake-word before activating query ingestion.
+* **Neural Text-To-Speech (Edge-TTS):** High-fidelity Microsoft Azure neural voice synthesis (`en-US-AriaNeural`).
+* **Acoustic Audio Visualizer:** Real-time acoustic frequency spectrum bars reacting to listening and processing states.
+* **Offline Fallback:** Automated fallback to `pyttsx3` when offline.
 
-* **Mouse & Keyboard Control:** Jarvis can autonomously click, type, scroll, and use hotkeys to navigate the UI.
-* **Window Management:** Minimizes, maximizes, and switches between desktop applications seamlessly.
-* **Browser Automation (Playwright):** Can open a browser, navigate to a website, execute a search, or scrape content.
-* **System Monitoring:** Tracks CPU, RAM, Battery, and Disk usage via a real-time dashboard.
-* **AI Task Planner:** Break down complex multi-step instructions (e.g., "Open Chrome, search for news, and take a screenshot") into actionable automated steps using the Groq LLM.
+## 3. Paper Trading Simulator & Market Engine
+* **Virtual Broker Simulation:** $100,000 USD sandbox cash balance for zero-risk trading.
+* **Order Execution Engine:** Instant execution of Market and Limit BUY/SELL orders.
+* **Real-time Price Feeds:** Live quotes and historical candlestick retrieval for US Equities (AAPL, NVDA, TSLA, MSFT, SPY, etc.) and Crypto (BTC, ETH, SOL).
+* **Position Tracking:** Automatic tracking of average cost basis, market value, and unrealized/realized P&L.
 
-## Productivity Features (Supabase Powered)
+## 4. Quantitative Technical Analysis Engine
+* **Relative Strength Index (RSI 14):** Wilder's smoothed momentum oscillator with overbought/oversold boundaries.
+* **Moving Average Convergence Divergence (MACD):** Fast 12, Slow 26, Signal 9 line and histogram crossover detection.
+* **Exponential Moving Average (EMA):** 20, 50, and 200 EMA ribbon overlays.
+* **Bollinger Bands (BB 20, 2):** Volatility channel bands.
+* **Interactive Candlestick Chart:** High-performance SVG candlestick and volume rendering.
 
-* **Persistent Memory:** Chat history logging to Supabase to retain conversational context.
-* **To-Do List Manager:** Voice-activated task management ("add buy milk to my task list").
-* **Smart Notes:** Speak to save important information directly into your secure database.
-* **Clipboard Manager:** Read and write directly to your OS clipboard using voice commands.
-* **Email Integration:** Read your latest unread emails securely using the official Gmail API via OAuth 2.0.
+## 5. Portfolio Analytics & Risk Metrics
+* **Sharpe Ratio:** Annualized risk-adjusted return ratio.
+* **Maximum Drawdown (MDD):** Peak-to-trough risk percentage evaluation.
+* **Win Rate & Profit Factor:** Historical execution profitability statistics.
+* **Asset Allocation:** Real-time percentage distribution across cash and open assets.
+* **Equity Curve Visualization:** Cumulative portfolio growth time-series.
 
-## Automation & Utility Features
+## 6. Resilient Productivity Hub
+* **Task Checklist:** Interactive to-do checklist with priority tags (High, Medium, Low) and completion status.
+* **Smart Notes:** Instant thought capture and searchable note log with timestamps.
+* **Hybrid Storage Engine:** Supabase PostgreSQL integration with automatic local JSON fallback.
+* **Alarms & Reminders:** Threaded background timers with audio and visual triggers.
+* **Clipboard Tools:** Voice and automated clipboard reading/writing.
 
-* **App Launcher:** Open any desktop application directly (e.g., Chrome, VS Code, Notepad).
-* **File Search:** Rapidly search your file system for specific documents or files.
-* **Web Navigation:** Open specific websites instantly (Google, LinkedIn, Netflix, YouTube).
-* **Media & Music:** Automatically search and play requested songs/videos on YouTube.
-* **Daily Summary:** Gives a personalized briefing including date, time, top news headlines, and a motivational quote.
-* **Dictionary:** Get instant definitions of complex words via the Free Dictionary API.
-* **Reminders/Alarms:** Thread-based background timers to remind you of tasks without blocking the main assistant thread.
+## 7. Hardware Telemetry & Desktop Automation
+* **Host Telemetry:** Real-time CPU usage, RAM utilization, and battery state.
+* **OS Task Planner:** Break down multi-step desktop automation into actionable sequences.
+* **Safety Failsafe:** Hardware emergency killswitch (`Ctrl + Shift + Esc`) to abort automation runs.
 
-## User Interface (Frontend)
-
-* **Glassmorphism Design:** Modern, futuristic, and sleek aesthetic with a dark theme.
-* **Real-time WebSockets:** Instant UI updates reflecting the assistant's internal state (Listening, Processing, Offline).
-* **Voice Waveform Animations:** Dynamic CSS animations that respond when Jarvis is active.
-* **Chat History Feed:** Scrollable interface displaying the live conversation log.

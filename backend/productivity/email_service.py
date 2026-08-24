@@ -1,8 +1,4 @@
 import os
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
 import base64
 
 # If modifying these scopes, delete the file token.json.
@@ -20,24 +16,45 @@ def get_gmail_service():
     if _cached_service:
         return _cached_service
 
+    try:
+        from google.auth.transport.requests import Request
+        from google.oauth2.credentials import Credentials
+        from google_auth_oauthlib.flow import InstalledAppFlow
+        from googleapiclient.discovery import build
+    except Exception as e:
+        print(f"Notice: Google API libraries not initialized ({e}). Gmail features disabled.")
+        return None
+
     creds = None
-    # The file token.json stores the user's access and refresh tokens
     if os.path.exists(TOKEN_PATH):
-        creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+        try:
+            creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+        except Exception:
+            creds = None
     
-    # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
+            try:
+                creds.refresh(Request())
+            except Exception:
+                creds = None
         else:
             if not os.path.exists(CREDS_PATH):
-                print("Missing credentials.json for Gmail API. Please download it from Google Cloud Console.")
                 return None
-            flow = InstalledAppFlow.from_client_secrets_file(CREDS_PATH, SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open(TOKEN_PATH, 'w') as token:
-            token.write(creds.to_json())
+            try:
+                flow = InstalledAppFlow.from_client_secrets_file(CREDS_PATH, SCOPES)
+                creds = flow.run_local_server(port=0)
+            except Exception:
+                return None
+        if creds:
+            try:
+                with open(TOKEN_PATH, 'w') as token:
+                    token.write(creds.to_json())
+            except Exception:
+                pass
+
+    if not creds:
+        return None
 
     try:
         _cached_service = build('gmail', 'v1', credentials=creds)

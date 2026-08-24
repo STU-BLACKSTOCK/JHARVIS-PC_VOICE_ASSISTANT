@@ -1,0 +1,129 @@
+{
+  "notes": [
+    {
+      "id": "97f62399",
+      "content": "Test note for verification",
+      "created_at": "2026-08-24T21:09:23.074240"
+    },
+    {
+      "id": "89fe8515",
+      "content": "Q3 profit margin target is 28%",
+      "created_at": "2026-08-24T21:07:03.008575"
+    },
+    {
+      "id": "50cd3ca7",
+      "content": "Test note for verification",
+      "created_at": "2026-08-24T20:43:10.166217"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "7bd7c0a0",
+      "content": "Test task for verification",
+      "status": "pending",
+      "priority": "high",
+      "created_at": "2026-08-24T21:09:24.129890"
+    },
+    {
+      "id": "7232e8f4",
+      "content": "Review market charts",
+      "status": "pending",
+      "priority": "medium",
+      "created_at": "2026-08-24T21:07:01.338822"
+    },
+    {
+      "id": "640f8797",
+      "content": "Test task for verification",
+      "status": "pending",
+      "priority": "high",
+      "created_at": "2026-08-24T20:43:10.408240"
+    }
+  ],
+  "chat_history": [
+    {
+      "role": "user",
+      "content": "Jarvis, give me an executive status update.",
+      "timestamp": "2026-08-24T20:58:07.511588"
+    },
+    {
+      "role": "user",
+      "content": "Jarvis, give me an executive status update.",
+      "timestamp": "2026-08-24T20:59:19.414445"
+    },
+    {
+      "role": "user",
+      "content": "Jarvis, give me a 1-sentence briefing on your status.",
+      "timestamp": "2026-08-24T21:04:26.802113"
+    },
+    {
+      "role": "jarvis",
+      "content": "All systems operational, telemetry normal, and ready to assist with notes, tasks, market data, trading, and desktop automation.",
+      "timestamp": "2026-08-24T21:04:27.538808"
+    },
+    {
+      "role": "user",
+      "content": "What is the price and RSI of AAPL?",
+      "timestamp": "2026-08-24T21:04:27.539367"
+    },
+    {
+      "role": "user",
+      "content": "What is the RSI of NVDA?",
+      "timestamp": "2026-08-24T21:06:37.741172"
+    },
+    {
+      "role": "jarvis",
+      "content": "The current RSI (14\u2011day) for **NVDA** is **46.0**, indicating bearish momentum.",
+      "timestamp": "2026-08-24T21:06:39.915428"
+    },
+    {
+      "role": "user",
+      "content": "What is the RSI of NVDA?",
+      "timestamp": "2026-08-24T21:06:58.738979"
+    },
+    {
+      "role": "jarvis",
+      "content": "The current RSI (14\u2011day) for **NVDA** is **46.0**, indicating neutral\u2011to\u2011slightly bearish momentum.",
+      "timestamp": "2026-08-24T21:07:00.897079"
+    },
+    {
+      "role": "user",
+      "content": "Add review market charts to my task list",
+      "timestamp": "2026-08-24T21:07:01.010196"
+    },
+    {
+      "role": "jarvis",
+      "content": "Task added. Let me know if you\u2019d like to set a priority, due date, or reminder.",
+      "timestamp": "2026-08-24T21:07:02.073110"
+    },
+    {
+      "role": "user",
+      "content": "Take a note: Q3 profit margin target is 28%",
+      "timestamp": "2026-08-24T21:07:02.193555"
+    },
+    {
+      "role": "jarvis",
+      "content": "Note saved. Let me know if you need anything else.",
+      "timestamp": "2026-08-24T21:07:03.802895"
+    },
+    {
+      "role": "user",
+      "content": "Jarvis, give me an executive status update.",
+      "timestamp": "2026-08-24T21:12:27.920294"
+    },
+    {
+      "role": "jarvis",
+      "content": "CPU usage is at 39.1 percent. RAM usage is at 84.9 percent. Battery is at 100% (Plugged In). ",
+      "timestamp": "2026-08-24T21:12:30.153410"
+    },
+    {
+      "role": "user",
+      "content": "open google",
+      "timestamp": "2026-08-24T21:12:42.067563"
+    },
+    {
+      "role": "jarvis",
+      "content": "Google is now open in your default browser. Let me know if you\u2019d like anything else.",
+      "timestamp": "2026-08-24T21:12:50.084485"
+    }
+  ]
+}
